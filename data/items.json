@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "nombre": "Proyector Epson EB-X41",
+    "categoria": "Electrónica",
+    "disponibilidad": "disponible",
+    "descripcion": "Proyector de 3600 lúmenes para presentaciones y reuniones. Incluye cable HDMI y control remoto.",
+    "ubicacion": "sala_reuniones"
+  },
+  {
+    "id": "2",
+    "nombre": "Impresora HP LaserJet Pro M404n",
+    "categoria": "Electrónica",
+    "disponibilidad": "en_uso",
+    "descripcion": "Impresora láser monocromática de alta velocidad, compartida por el equipo de administración.",
+    "ubicacion": "oficina_principal"
+  },
+  {
+    "id": "3",
+    "nombre": "Mesa de conferencias ovalada",
+    "categoria": "Mobiliario",
+    "disponibilidad": "disponible",
+    "descripcion": "Mesa ovalada con capacidad para 8 personas. Incluye toma de corriente central y soporte para cables.",
+    "ubicacion": "sala_reuniones"
+  }
+]
