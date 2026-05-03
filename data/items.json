@@ -1,26 +1,372 @@
 [
   {
     "id": "1",
-    "nombre": "Proyector Epson EB-X41",
-    "categoria": "Electrónica",
+    "nombre": "Mochila Sidiunlar",
+    "categoria": "Transporte",
     "disponibilidad": "disponible",
-    "descripcion": "Proyector de 3600 lúmenes para presentaciones y reuniones. Incluye cable HDMI y control remoto.",
-    "ubicacion": "sala_reuniones"
+    "descripcion": "Mochila de transporte principal para equipos.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
   },
   {
     "id": "2",
-    "nombre": "Impresora HP LaserJet Pro M404n",
-    "categoria": "Electrónica",
-    "disponibilidad": "en_uso",
-    "descripcion": "Impresora láser monocromática de alta velocidad, compartida por el equipo de administración.",
-    "ubicacion": "oficina_principal"
+    "nombre": "Notebook Asus ROG",
+    "categoria": "Informática",
+    "disponibilidad": "disponible",
+    "descripcion": "Laptop Asus ROG para trabajo y producción.",
+    "ubicacion": "oficina_principal",
+    "asignadoA": "externos",
+    "externoNombre": ""
   },
   {
     "id": "3",
-    "nombre": "Mesa de conferencias ovalada",
-    "categoria": "Mobiliario",
+    "nombre": "Cargador Notebook Asus ROG",
+    "categoria": "Informática",
     "disponibilidad": "disponible",
-    "descripcion": "Mesa ovalada con capacidad para 8 personas. Incluye toma de corriente central y soporte para cables.",
-    "ubicacion": "sala_reuniones"
+    "descripcion": "Cargador original del Notebook Asus ROG.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "4",
+    "nombre": "Base Notebook con Ventiladores",
+    "categoria": "Informática",
+    "disponibilidad": "disponible",
+    "descripcion": "Base de soporte con ventiladores de refrigeración para notebook.",
+    "ubicacion": "oficina_principal",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "5",
+    "nombre": "Mouse Alámbrico ROG",
+    "categoria": "Informática",
+    "disponibilidad": "disponible",
+    "descripcion": "Mouse gaming alámbrico ROG.",
+    "ubicacion": "oficina_principal",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "6",
+    "nombre": "Mouse Inalámbrico Yelandar",
+    "categoria": "Informática",
+    "disponibilidad": "disponible",
+    "descripcion": "Mouse inalámbrico Yelandar.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "7",
+    "nombre": "Kit DJI Pocket 3",
+    "categoria": "Fotografía",
+    "disponibilidad": "disponible",
+    "descripcion": "Kit completo DJI Pocket 3: cámara principal, batería portátil, micrófono con pelusa, stand trípode y manuales.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "8",
+    "nombre": "Luces Ulanzi (x2)",
+    "categoria": "Fotografía",
+    "disponibilidad": "disponible",
+    "descripcion": "Pack de 2 luces Ulanzi para iluminación en exteriores e interiores.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "9",
+    "nombre": "PowerBank Sidiunlar",
+    "categoria": "Accesorios",
+    "disponibilidad": "disponible",
+    "descripcion": "Batería portátil Sidiunlar para carga de dispositivos.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "10",
+    "nombre": "PowerBank Ecopower",
+    "categoria": "Accesorios",
+    "disponibilidad": "disponible",
+    "descripcion": "Batería portátil Ecopower para carga de dispositivos.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "11",
+    "nombre": "Auriculares de Cable",
+    "categoria": "Audio",
+    "disponibilidad": "disponible",
+    "descripcion": "Auriculares con cable para monitoreo y comunicaciones.",
+    "ubicacion": "oficina_principal",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "12",
+    "nombre": "Celular Samsung S23 Plus",
+    "categoria": "Comunicaciones",
+    "disponibilidad": "en_uso",
+    "descripcion": "Samsung Galaxy S23 Plus con caja original.",
+    "ubicacion": "oficina_principal",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "13",
+    "nombre": "Micrófonos Corbateros Dinax (x2)",
+    "categoria": "Audio",
+    "disponibilidad": "disponible",
+    "descripcion": "Pack de 2 micrófonos de corbata Dinax.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "14",
+    "nombre": "Starlink",
+    "categoria": "Comunicaciones",
+    "disponibilidad": "disponible",
+    "descripcion": "Kit de antena y router Starlink para conectividad satelital.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "15",
+    "nombre": "Megáfono",
+    "categoria": "Audio",
+    "disponibilidad": "disponible",
+    "descripcion": "Megáfono portátil para uso en exteriores.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "16",
+    "nombre": "Proyector",
+    "categoria": "Electrónica",
+    "disponibilidad": "disponible",
+    "descripcion": "Proyector portátil para presentaciones y proyecciones.",
+    "ubicacion": "sala_reuniones",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "17",
+    "nombre": "Drones (x2)",
+    "categoria": "Fotografía",
+    "disponibilidad": "disponible",
+    "descripcion": "Pack de 2 drones para fotografía y video aéreo.",
+    "ubicacion": "deposito",
+    "asignadoA": "",
+    "externoNombre": ""
+  },
+  {
+    "id": "18",
+    "nombre": "GoPro Hero 13 Black",
+    "categoria": "Fotografía",
+    "disponibilidad": "disponible",
+    "descripcion": "Cámara de acción GoPro Hero 13 Black.",
+    "ubicacion": "deposito",
+    "asignadoA": "",
+    "externoNombre": ""
+  },
+  {
+    "id": "19",
+    "nombre": "Gimbal",
+    "categoria": "Fotografía",
+    "disponibilidad": "disponible",
+    "descripcion": "Estabilizador gimbal para cámara y dispositivos móviles.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "20",
+    "nombre": "Impresora 3D de Filamento (FDM)",
+    "categoria": "Impresión 3D",
+    "disponibilidad": "disponible",
+    "descripcion": "Impresora 3D de tipo filamento (FDM).",
+    "ubicacion": "laboratorio",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "21",
+    "nombre": "Impresora 3D de Resina (SLA)",
+    "categoria": "Impresión 3D",
+    "disponibilidad": "disponible",
+    "descripcion": "Impresora 3D de tipo resina líquida (SLA/MSLA).",
+    "ubicacion": "laboratorio",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "22",
+    "nombre": "Accesorios Impresoras 3D",
+    "categoria": "Impresión 3D",
+    "disponibilidad": "disponible",
+    "descripcion": "Water wash, cable de corriente, brazo articulado, espátula, precintos, kit de herramientas y alicate.",
+    "ubicacion": "laboratorio",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "23",
+    "nombre": "Filamentos Impresora 3D",
+    "categoria": "Impresión 3D",
+    "disponibilidad": "disponible",
+    "descripcion": "Stock de filamentos: chocolate, plateado, blanco y verde.",
+    "ubicacion": "laboratorio",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "24",
+    "nombre": "Resina Negra (x3)",
+    "categoria": "Impresión 3D",
+    "disponibilidad": "disponible",
+    "descripcion": "3 frascos de resina negra para impresora de resina.",
+    "ubicacion": "laboratorio",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "25",
+    "nombre": "Disco Duro Portátil WD 1TB",
+    "categoria": "Almacenamiento",
+    "disponibilidad": "disponible",
+    "descripcion": "Disco duro portátil Western Digital de 1TB.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "26",
+    "nombre": "SSD Portátil 4TB",
+    "categoria": "Almacenamiento",
+    "disponibilidad": "disponible",
+    "descripcion": "SSD portátil celeste de 4TB de alta velocidad.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "27",
+    "nombre": "Carry Disk SATA 2.5''",
+    "categoria": "Almacenamiento",
+    "disponibilidad": "disponible",
+    "descripcion": "Case portátil para discos SATA de 2.5 pulgadas.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "28",
+    "nombre": "Pendrive Kingston 64GB",
+    "categoria": "Almacenamiento",
+    "disponibilidad": "disponible",
+    "descripcion": "Memoria USB Kingston de 64GB.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "29",
+    "nombre": "Cámara Canon EOS 60D",
+    "categoria": "Fotografía",
+    "disponibilidad": "disponible",
+    "descripcion": "Cuerpo de cámara réflex digital Canon EOS 60D.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "30",
+    "nombre": "Lente Sigma Gran Angular 10-20mm",
+    "categoria": "Fotografía",
+    "disponibilidad": "disponible",
+    "descripcion": "Lente Sigma gran angular 10-20mm para montura Canon.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "31",
+    "nombre": "Lente Sigma 18-250mm",
+    "categoria": "Fotografía",
+    "disponibilidad": "disponible",
+    "descripcion": "Lente Sigma zoom 18-250mm para montura Canon.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "32",
+    "nombre": "Baterías Cámara Canon (x2)",
+    "categoria": "Fotografía",
+    "disponibilidad": "disponible",
+    "descripcion": "2 baterías recargables originales para Canon EOS 60D.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "33",
+    "nombre": "Cargador Batería Canon",
+    "categoria": "Fotografía",
+    "disponibilidad": "disponible",
+    "descripcion": "Cargador de batería original para Canon EOS 60D.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "34",
+    "nombre": "Cable Cargador Canon",
+    "categoria": "Fotografía",
+    "disponibilidad": "disponible",
+    "descripcion": "Cable de carga para la cámara Canon EOS 60D.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "35",
+    "nombre": "Bolso Cámara Canon",
+    "categoria": "Transporte",
+    "disponibilidad": "disponible",
+    "descripcion": "Bolso de transporte para cámara Canon y accesorios.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "36",
+    "nombre": "Tarjetas de Memoria",
+    "categoria": "Almacenamiento",
+    "disponibilidad": "disponible",
+    "descripcion": "MicroSD SanDisk 32GB, MicroSD Kingston 32GB, SanDisk Extreme MicroSD 128GB, MicroSD Kingston 8GB.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
+  },
+  {
+    "id": "37",
+    "nombre": "Kit de Cables",
+    "categoria": "Accesorios",
+    "disponibilidad": "disponible",
+    "descripcion": "Cable HDMI, cable de red RJ45, 2x cable Tipo C, cable AV (rojo/amarillo/blanco), 2x cable USB-A.",
+    "ubicacion": "deposito",
+    "asignadoA": "externos",
+    "externoNombre": ""
   }
 ]

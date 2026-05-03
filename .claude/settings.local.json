@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(mkdir -p \"C:\\\\Users\\\\HP\\\\coding\\\\inventario-reno\\\\data\")",
-      "Bash(mkdir -p \"C:\\\\Users\\\\HP\\\\coding\\\\inventario-reno\\\\app\\\\_components\")"
+      "Bash(mkdir -p \"C:\\\\Users\\\\HP\\\\coding\\\\inventario-reno\\\\app\\\\_components\")",
+      "Bash(curl -s http://localhost:3000)"
     ]
   }
 }

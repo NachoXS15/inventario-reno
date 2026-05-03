@@ -5,4 +5,6 @@ export interface Item {
   disponibilidad: string
   descripcion: string
   ubicacion: string
+  asignadoA: string
+  externoNombre: string
 }

@@ -5,10 +5,10 @@ import type { Item } from '../types'
 import { updateItem } from '../actions'
 
 const DISPONIBILIDAD: Record<string, { label: string; badge: string }> = {
-  disponible:     { label: 'Disponible',     badge: 'bg-green-100 text-green-800 border-green-200' },
-  en_uso:         { label: 'En uso',         badge: 'bg-amber-100 text-amber-800 border-amber-200' },
-  en_reparacion:  { label: 'En reparación',  badge: 'bg-orange-100 text-orange-800 border-orange-200' },
-  no_disponible:  { label: 'No disponible',  badge: 'bg-red-100 text-red-800 border-red-200' },
+  disponible:    { label: 'Disponible',    badge: 'bg-green-100 text-green-800 border-green-200' },
+  en_uso:        { label: 'En uso',        badge: 'bg-amber-100 text-amber-800 border-amber-200' },
+  en_reparacion: { label: 'En reparación', badge: 'bg-orange-100 text-orange-800 border-orange-200' },
+  no_disponible: { label: 'No disponible', badge: 'bg-red-100 text-red-800 border-red-200' },
 }
 
 const UBICACION: Record<string, { label: string; badge: string }> = {
@@ -19,7 +19,29 @@ const UBICACION: Record<string, { label: string; badge: string }> = {
   laboratorio:       { label: 'Laboratorio',        badge: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
 }
 
+const ASIGNADO = [
+  { value: '',         label: 'Sin asignar' },
+  { value: 'nacho',    label: 'Nacho' },
+  { value: 'corcho',   label: 'Corcho' },
+  { value: 'facu',     label: 'Facu' },
+  { value: 'miqueas',  label: 'Miqueas' },
+  { value: 'camilo',   label: 'Camilo' },
+  { value: 'fabri',    label: 'Fabri' },
+  { value: 'flor',     label: 'Flor' },
+  { value: 'lore',     label: 'Lore' },
+  { value: 'chueca',   label: 'Chueca' },
+  { value: 'externos', label: 'Externos' },
+]
+
 type FormData = Omit<Item, 'id'>
+
+function getAsignadoLabel(item: Item): string | null {
+  if (!item.asignadoA) return null
+  if (item.asignadoA === 'externos') {
+    return item.externoNombre ? item.externoNombre : 'Externo'
+  }
+  return ASIGNADO.find((o) => o.value === item.asignadoA)?.label ?? null
+}
 
 function Badge({ config, value }: { config: Record<string, { label: string; badge: string }>; value: string }) {
   const entry = config[value]
@@ -44,6 +66,8 @@ const inputClass =
   'w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-500 focus:outline-none focus:ring-2 focus:ring-zinc-200'
 
 function ItemCard({ item, onClick }: { item: Item; onClick: () => void }) {
+  const asignadoLabel = getAsignadoLabel(item)
+
   return (
     <div
       onClick={onClick}
@@ -58,6 +82,26 @@ function ItemCard({ item, onClick }: { item: Item; onClick: () => void }) {
             </span>
           </div>
           <p className="line-clamp-2 text-sm text-zinc-500">{item.descripcion}</p>
+          {asignadoLabel && (
+            <div className="mt-2 flex items-center gap-1.5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="shrink-0 text-zinc-400"
+              >
+                <circle cx="12" cy="8" r="4" />
+                <path d="M20 21a8 8 0 1 0-16 0" />
+              </svg>
+              <span className="text-xs text-zinc-400">Tiene: <span className="font-medium text-zinc-600">{asignadoLabel}</span></span>
+            </div>
+          )}
         </div>
         <div className="flex shrink-0 flex-col items-end gap-2">
           <Badge config={DISPONIBILIDAD} value={item.disponibilidad} />
@@ -84,8 +128,8 @@ function Modal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
-        <div className="mb-5 flex items-center justify-between">
+      <div className="relative flex w-full max-w-lg flex-col rounded-2xl bg-white shadow-2xl" style={{ maxHeight: '90vh' }}>
+        <div className="flex items-center justify-between border-b border-zinc-100 px-6 py-4">
           <h2 className="text-lg font-semibold text-zinc-900">Editar elemento</h2>
           <button
             onClick={onClose}
@@ -98,66 +142,96 @@ function Modal({
           </button>
         </div>
 
-        <div className="space-y-4">
-          <Field label="Nombre">
-            <input
-              type="text"
-              value={formData.nombre}
-              onChange={(e) => onChange({ ...formData, nombre: e.target.value })}
-              className={inputClass}
-            />
-          </Field>
+        <div className="overflow-y-auto px-6 py-5">
+          <div className="space-y-4">
+            <Field label="Nombre">
+              <input
+                type="text"
+                value={formData.nombre}
+                onChange={(e) => onChange({ ...formData, nombre: e.target.value })}
+                className={inputClass}
+              />
+            </Field>
 
-          <Field label="Categoría">
-            <input
-              type="text"
-              value={formData.categoria}
-              onChange={(e) => onChange({ ...formData, categoria: e.target.value })}
-              className={inputClass}
-            />
-          </Field>
+            <Field label="Categoría">
+              <input
+                type="text"
+                value={formData.categoria}
+                onChange={(e) => onChange({ ...formData, categoria: e.target.value })}
+                className={inputClass}
+              />
+            </Field>
 
-          <Field label="Descripción">
-            <textarea
-              value={formData.descripcion}
-              onChange={(e) => onChange({ ...formData, descripcion: e.target.value })}
-              rows={3}
-              className={`${inputClass} resize-none`}
-            />
-          </Field>
+            <Field label="Descripción">
+              <textarea
+                value={formData.descripcion}
+                onChange={(e) => onChange({ ...formData, descripcion: e.target.value })}
+                rows={3}
+                className={`${inputClass} resize-none`}
+              />
+            </Field>
 
-          <Field label="Disponibilidad">
-            <div className="flex items-center gap-3">
-              <Badge config={DISPONIBILIDAD} value={formData.disponibilidad} />
+            <Field label="Disponibilidad">
+              <div className="flex items-center gap-3">
+                <Badge config={DISPONIBILIDAD} value={formData.disponibilidad} />
+                <select
+                  value={formData.disponibilidad}
+                  onChange={(e) => onChange({ ...formData, disponibilidad: e.target.value })}
+                  className={`flex-1 ${inputClass}`}
+                >
+                  {Object.entries(DISPONIBILIDAD).map(([value, { label }]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
+                </select>
+              </div>
+            </Field>
+
+            <Field label="Ubicación">
+              <div className="flex items-center gap-3">
+                <Badge config={UBICACION} value={formData.ubicacion} />
+                <select
+                  value={formData.ubicacion}
+                  onChange={(e) => onChange({ ...formData, ubicacion: e.target.value })}
+                  className={`flex-1 ${inputClass}`}
+                >
+                  {Object.entries(UBICACION).map(([value, { label }]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
+                </select>
+              </div>
+            </Field>
+
+            <Field label="Asignado a">
               <select
-                value={formData.disponibilidad}
-                onChange={(e) => onChange({ ...formData, disponibilidad: e.target.value })}
-                className={`flex-1 ${inputClass}`}
+                value={formData.asignadoA}
+                onChange={(e) => {
+                  const next = e.target.value
+                  onChange({
+                    ...formData,
+                    asignadoA: next,
+                    externoNombre: next !== 'externos' ? '' : formData.externoNombre,
+                  })
+                }}
+                className={inputClass}
               >
-                {Object.entries(DISPONIBILIDAD).map(([value, { label }]) => (
+                {ASIGNADO.map(({ value, label }) => (
                   <option key={value} value={value}>{label}</option>
                 ))}
               </select>
-            </div>
-          </Field>
-
-          <Field label="Ubicación">
-            <div className="flex items-center gap-3">
-              <Badge config={UBICACION} value={formData.ubicacion} />
-              <select
-                value={formData.ubicacion}
-                onChange={(e) => onChange({ ...formData, ubicacion: e.target.value })}
-                className={`flex-1 ${inputClass}`}
-              >
-                {Object.entries(UBICACION).map(([value, { label }]) => (
-                  <option key={value} value={value}>{label}</option>
-                ))}
-              </select>
-            </div>
-          </Field>
+              {formData.asignadoA === 'externos' && (
+                <input
+                  type="text"
+                  placeholder="¿Quién lo tiene? (nombre del externo)"
+                  value={formData.externoNombre}
+                  onChange={(e) => onChange({ ...formData, externoNombre: e.target.value })}
+                  className={`mt-2 ${inputClass}`}
+                />
+              )}
+            </Field>
+          </div>
         </div>
 
-        <div className="mt-6 flex gap-3">
+        <div className="flex gap-3 border-t border-zinc-100 px-6 py-4">
           <button
             onClick={onClose}
             className="flex-1 rounded-lg border border-zinc-200 px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
@@ -189,12 +263,14 @@ export default function InventoryClient({ initialItems }: { initialItems: Item[]
     const q = search.toLowerCase()
     const dispLabel = DISPONIBILIDAD[item.disponibilidad]?.label ?? ''
     const ubicLabel = UBICACION[item.ubicacion]?.label ?? ''
+    const asigLabel = getAsignadoLabel(item) ?? ''
     return (
       item.nombre.toLowerCase().includes(q) ||
       item.categoria.toLowerCase().includes(q) ||
       item.descripcion.toLowerCase().includes(q) ||
       dispLabel.toLowerCase().includes(q) ||
-      ubicLabel.toLowerCase().includes(q)
+      ubicLabel.toLowerCase().includes(q) ||
+      asigLabel.toLowerCase().includes(q)
     )
   })
 
@@ -206,6 +282,8 @@ export default function InventoryClient({ initialItems }: { initialItems: Item[]
       disponibilidad: item.disponibilidad,
       descripcion: item.descripcion,
       ubicacion: item.ubicacion,
+      asignadoA: item.asignadoA,
+      externoNombre: item.externoNombre,
     })
   }
 
@@ -227,10 +305,30 @@ export default function InventoryClient({ initialItems }: { initialItems: Item[]
 
   return (
     <div className="min-h-screen bg-zinc-50 font-sans">
-      <header className="border-b border-zinc-200 bg-white px-6 py-5">
-        <div className="mx-auto max-w-5xl">
-          <h1 className="text-2xl font-semibold text-zinc-900">Inventario de Oficina</h1>
-          <p className="mt-0.5 text-sm text-zinc-500">Gestión de elementos y recursos</p>
+      <header className="border-b border-zinc-200 bg-white px-6 py-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-zinc-900">Inventario de Oficina</h1>
+            <p className="mt-0.5 text-sm text-zinc-500">Gestión de elementos y recursos</p>
+          </div>
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border-2 border-dashed border-zinc-200 bg-zinc-50">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-zinc-300"
+            >
+              <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+              <circle cx="9" cy="9" r="2" />
+              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+            </svg>
+          </div>
         </div>
       </header>
 
@@ -253,7 +351,7 @@ export default function InventoryClient({ initialItems }: { initialItems: Item[]
             </svg>
             <input
               type="search"
-              placeholder="Buscar por nombre, categoría, disponibilidad, ubicación…"
+              placeholder="Buscar por nombre, categoría, disponibilidad, ubicación, persona…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="w-full rounded-lg border border-zinc-300 bg-white py-3 pl-10 pr-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-200"
