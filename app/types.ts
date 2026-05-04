@@ -16,3 +16,10 @@ export interface Item {
   prestado: boolean
   historialEgresos: EgresoRecord[]
 }
+
+export interface Contact {
+  id: string
+  nombre: string
+  telefono: string
+  categoria: string
+}

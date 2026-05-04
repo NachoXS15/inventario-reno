@@ -16,8 +16,15 @@
     "descripcion": "Laptop Asus ROG para trabajo y producción.",
     "estado": "disponible",
     "ubicacion": "oficina_principal",
-    "prestado": false,
-    "historialEgresos": []
+    "prestado": true,
+    "historialEgresos": [
+      {
+        "prestadoA": "Flor",
+        "fechaEgreso": "2026-04-30",
+        "fechaDevolucionEstimada": "2026-05-03",
+        "motivo": ""
+      }
+    ]
   },
   {
     "id": "3",
@@ -26,8 +33,15 @@
     "descripcion": "Cargador original del Notebook Asus ROG.",
     "estado": "disponible",
     "ubicacion": "oficina_principal",
-    "prestado": false,
-    "historialEgresos": []
+    "prestado": true,
+    "historialEgresos": [
+      {
+        "prestadoA": "Facu",
+        "fechaEgreso": "2026-05-02",
+        "fechaDevolucionEstimada": "2026-05-03",
+        "motivo": ""
+      }
+    ]
   },
   {
     "id": "4",
@@ -66,8 +80,29 @@
     "descripcion": "Kit completo DJI Pocket 3: cámara principal, batería portátil, micrófono con pelusa, stand trípode y manuales.",
     "estado": "disponible",
     "ubicacion": "oficina_principal",
-    "prestado": false,
-    "historialEgresos": []
+    "prestado": true,
+    "historialEgresos": [
+      {
+        "prestadoA": "Facu ",
+        "fechaEgreso": "2026-05-04",
+        "fechaDevolucionEstimada": "2026-05-06",
+        "motivo": "Para usar en un evento",
+        "fechaDevolucion": "2026-05-04"
+      },
+      {
+        "prestadoA": "Miqueas",
+        "fechaEgreso": "2026-05-04",
+        "fechaDevolucionEstimada": "2026-05-07",
+        "motivo": "Descarga y edicion de videos",
+        "fechaDevolucion": "2026-05-08"
+      },
+      {
+        "prestadoA": "Miqueas",
+        "fechaEgreso": "2026-04-30",
+        "fechaDevolucionEstimada": "2026-05-02",
+        "motivo": "Para ir a andar en bici"
+      }
+    ]
   },
   {
     "id": "8",
@@ -117,7 +152,22 @@
     "estado": "disponible",
     "ubicacion": "oficina_principal",
     "prestado": false,
-    "historialEgresos": []
+    "historialEgresos": [
+      {
+        "prestadoA": "Flor",
+        "fechaEgreso": "2026-05-04",
+        "fechaDevolucionEstimada": "2026-05-06",
+        "motivo": "Guardia",
+        "fechaDevolucion": "2026-05-07"
+      },
+      {
+        "prestadoA": "Flor",
+        "fechaEgreso": "2026-05-01",
+        "fechaDevolucionEstimada": "2026-05-03",
+        "motivo": "Guardia",
+        "fechaDevolucion": "2026-05-04"
+      }
+    ]
   },
   {
     "id": "13",

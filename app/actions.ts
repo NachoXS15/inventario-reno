@@ -1,22 +1,21 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import fs from 'fs'
-import path from 'path'
-import type { Item, EgresoRecord } from './types'
-
-const dataPath = path.join(process.cwd(), 'data', 'items.json')
+import type { Item, EgresoRecord, Contact } from './types'
+import { supabaseServer } from '../lib/supabase'
 
 export async function updateItem(
   id: string,
   data: Omit<Item, 'id' | 'prestado' | 'historialEgresos'>
 ) {
-  const raw = fs.readFileSync(dataPath, 'utf-8')
-  const items: Item[] = JSON.parse(raw)
-  const index = items.findIndex((item) => item.id === id)
-  if (index === -1) return
-  items[index] = { ...items[index], ...data }
-  fs.writeFileSync(dataPath, JSON.stringify(items, null, 2), 'utf-8')
+  const supabase = supabaseServer()
+  await supabase.from('items').update({
+    nombre: data.nombre,
+    categoria: data.categoria,
+    descripcion: data.descripcion,
+    estado: data.estado,
+    ubicacion: data.ubicacion,
+  }).eq('id', id)
   revalidatePath('/')
 }
 
@@ -24,28 +23,59 @@ export async function registrarEgreso(
   id: string,
   egreso: Omit<EgresoRecord, 'fechaDevolucion'>
 ) {
-  const raw = fs.readFileSync(dataPath, 'utf-8')
-  const items: Item[] = JSON.parse(raw)
-  const index = items.findIndex((item) => item.id === id)
-  if (index === -1) return
-  items[index] = {
-    ...items[index],
-    prestado: true,
-    historialEgresos: [...items[index].historialEgresos, egreso],
-  }
-  fs.writeFileSync(dataPath, JSON.stringify(items, null, 2), 'utf-8')
+  const supabase = supabaseServer()
+  await Promise.all([
+    supabase.from('egresos').insert({
+      item_id: id,
+      prestado_a: egreso.prestadoA,
+      fecha_egreso: egreso.fechaEgreso,
+      fecha_devolucion_estimada: egreso.fechaDevolucionEstimada,
+      motivo: egreso.motivo,
+    }),
+    supabase.from('items').update({ prestado: true }).eq('id', id),
+  ])
   revalidatePath('/')
 }
 
 export async function registrarDevolucion(id: string, fechaDevolucion: string) {
-  const raw = fs.readFileSync(dataPath, 'utf-8')
-  const items: Item[] = JSON.parse(raw)
-  const index = items.findIndex((item) => item.id === id)
-  if (index === -1) return
-  const historial = [...items[index].historialEgresos]
-  if (historial.length === 0) return
-  historial[historial.length - 1] = { ...historial[historial.length - 1], fechaDevolucion }
-  items[index] = { ...items[index], prestado: false, historialEgresos: historial }
-  fs.writeFileSync(dataPath, JSON.stringify(items, null, 2), 'utf-8')
+  const supabase = supabaseServer()
+  const { data: latest } = await supabase
+    .from('egresos')
+    .select('id')
+    .eq('item_id', id)
+    .order('seq', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  if (!latest) return
+  await Promise.all([
+    supabase.from('egresos').update({ fecha_devolucion: fechaDevolucion }).eq('id', latest.id),
+    supabase.from('items').update({ prestado: false }).eq('id', id),
+  ])
+  revalidatePath('/')
+}
+
+export async function addContact(data: Omit<Contact, 'id'>) {
+  const supabase = supabaseServer()
+  await supabase.from('contacts').insert({
+    nombre: data.nombre,
+    telefono: data.telefono,
+    categoria: data.categoria,
+  })
+  revalidatePath('/')
+}
+
+export async function updateContact(id: string, data: Omit<Contact, 'id'>) {
+  const supabase = supabaseServer()
+  await supabase.from('contacts').update({
+    nombre: data.nombre,
+    telefono: data.telefono,
+    categoria: data.categoria,
+  }).eq('id', id)
+  revalidatePath('/')
+}
+
+export async function deleteContact(id: string) {
+  const supabase = supabaseServer()
+  await supabase.from('contacts').delete().eq('id', id)
   revalidatePath('/')
 }

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "c1",
+    "nombre": "Nacho",
+    "telefono": "+543804800454",
+    "categoria": "Comunicación"
+  },
+  {
+    "id": "c2",
+    "nombre": "Flor",
+    "telefono": "+543804631949",
+    "categoria": "Comunicación"
+  },
+  {
+    "id": "c3",
+    "nombre": "Facu",
+    "telefono": "+543804364700",
+    "categoria": "Comunicación"
+  },
+  {
+    "id": "c4",
+    "nombre": "Camilo",
+    "telefono": "+543804915269",
+    "categoria": "Comunicación"
+  },
+  {
+    "id": "c5",
+    "nombre": "Corcho",
+    "telefono": "+543804631044",
+    "categoria": "Comunicación"
+  },
+  {
+    "id": "c6",
+    "nombre": "Fabri",
+    "telefono": "+543804223453",
+    "categoria": "Comunicación"
+  },
+  {
+    "id": "c7",
+    "nombre": "Lore",
+    "telefono": "+543804665755",
+    "categoria": "Comunicación"
+  },
+  {
+    "id": "c8",
+    "nombre": "Miqueas",
+    "telefono": "+543804248062",
+    "categoria": "Comunicación"
+  },
+  {
+    "id": "c9",
+    "nombre": "Chueca",
+    "telefono": "+543826479245",
+    "categoria": "Comunicación"
+  },
+  {
+    "id": "c10",
+    "nombre": "Uriel",
+    "telefono": "+543804217136",
+    "categoria": "Externo"
+  },
+  {
+    "id": "c11",
+    "nombre": "Alesio",
+    "telefono": "+543804808405",
+    "categoria": "Externo"
+  },
+  {
+    "id": "63b1142d-2e10-4261-a4b9-180ec862ae01",
+    "nombre": "Paula Gómez",
+    "categoria": "",
+    "telefono": "+543804112892"
+  },
+  {
+    "id": "15546ce9-53ae-4f92-a15e-d1f35051c5cc",
+    "nombre": "Naza Soler",
+    "categoria": "Externo",
+    "telefono": "123456789"
+  }
+]
