@@ -5,7 +5,7 @@
     "categoria": "Transporte",
     "descripcion": "Mochila de transporte principal para equipos.",
     "estado": "disponible",
-    "ubicacion": "recepcion",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -25,7 +25,7 @@
     "categoria": "Informática",
     "descripcion": "Cargador original del Notebook Asus ROG.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -55,7 +55,7 @@
     "categoria": "Informática",
     "descripcion": "Mouse inalámbrico Yelandar.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -65,7 +65,7 @@
     "categoria": "Fotografía",
     "descripcion": "Kit completo DJI Pocket 3: cámara principal, batería portátil, micrófono con pelusa, stand trípode y manuales.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -75,7 +75,7 @@
     "categoria": "Fotografía",
     "descripcion": "Pack de 2 luces Ulanzi para iluminación en exteriores e interiores.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -85,7 +85,7 @@
     "categoria": "Accesorios",
     "descripcion": "Batería portátil Sidiunlar para carga de dispositivos.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -95,7 +95,7 @@
     "categoria": "Accesorios",
     "descripcion": "Batería portátil Ecopower para carga de dispositivos.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -114,7 +114,7 @@
     "nombre": "Celular Samsung S23 Plus",
     "categoria": "Comunicaciones",
     "descripcion": "Samsung Galaxy S23 Plus con caja original.",
-    "estado": "en_uso",
+    "estado": "disponible",
     "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
@@ -125,7 +125,7 @@
     "categoria": "Audio",
     "descripcion": "Pack de 2 micrófonos de corbata Dinax.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -135,7 +135,7 @@
     "categoria": "Comunicaciones",
     "descripcion": "Kit de antena y router Starlink para conectividad satelital.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -145,7 +145,7 @@
     "categoria": "Audio",
     "descripcion": "Megáfono portátil para uso en exteriores.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -165,7 +165,7 @@
     "categoria": "Fotografía",
     "descripcion": "Pack de 2 drones para fotografía y video aéreo.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -175,9 +175,16 @@
     "categoria": "Fotografía",
     "descripcion": "Cámara de acción GoPro Hero 13 Black.",
     "estado": "disponible",
-    "ubicacion": "deposito",
-    "prestado": false,
-    "historialEgresos": []
+    "ubicacion": "oficina_principal",
+    "prestado": true,
+    "historialEgresos": [
+      {
+        "prestadoA": "Uriel Narvaez",
+        "fechaEgreso": "2026-05-04",
+        "fechaDevolucionEstimada": "2026-05-09",
+        "motivo": "Se encarga de tenerla"
+      }
+    ]
   },
   {
     "id": "19",
@@ -185,7 +192,7 @@
     "categoria": "Fotografía",
     "descripcion": "Estabilizador gimbal para cámara y dispositivos móviles.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -245,7 +252,7 @@
     "categoria": "Almacenamiento",
     "descripcion": "Disco duro portátil Western Digital de 1TB.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -255,7 +262,7 @@
     "categoria": "Almacenamiento",
     "descripcion": "SSD portátil celeste de 4TB de alta velocidad.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -265,7 +272,7 @@
     "categoria": "Almacenamiento",
     "descripcion": "Case portátil para discos SATA de 2.5 pulgadas.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -275,7 +282,7 @@
     "categoria": "Almacenamiento",
     "descripcion": "Memoria USB Kingston de 64GB.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -285,7 +292,7 @@
     "categoria": "Fotografía",
     "descripcion": "Cuerpo de cámara réflex digital Canon EOS 60D.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -295,7 +302,7 @@
     "categoria": "Fotografía",
     "descripcion": "Lente Sigma gran angular 10-20mm para montura Canon.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -305,7 +312,7 @@
     "categoria": "Fotografía",
     "descripcion": "Lente Sigma zoom 18-250mm para montura Canon.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -315,7 +322,7 @@
     "categoria": "Fotografía",
     "descripcion": "2 baterías recargables originales para Canon EOS 60D.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -325,7 +332,7 @@
     "categoria": "Fotografía",
     "descripcion": "Cargador de batería original para Canon EOS 60D.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -335,7 +342,7 @@
     "categoria": "Fotografía",
     "descripcion": "Cable de carga para la cámara Canon EOS 60D.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -345,7 +352,7 @@
     "categoria": "Transporte",
     "descripcion": "Bolso de transporte para cámara Canon y accesorios.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -355,7 +362,7 @@
     "categoria": "Almacenamiento",
     "descripcion": "MicroSD SanDisk 32GB, MicroSD Kingston 32GB, SanDisk Extreme MicroSD 128GB, MicroSD Kingston 8GB.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   },
@@ -365,7 +372,7 @@
     "categoria": "Accesorios",
     "descripcion": "Cable HDMI, cable de red RJ45, 2x cable Tipo C, cable AV (rojo/amarillo/blanco), 2x cable USB-A.",
     "estado": "disponible",
-    "ubicacion": "deposito",
+    "ubicacion": "oficina_principal",
     "prestado": false,
     "historialEgresos": []
   }
