@@ -1,10 +1,18 @@
+export interface EgresoRecord {
+  prestadoA: string
+  fechaEgreso: string
+  fechaDevolucionEstimada: string
+  motivo: string
+  fechaDevolucion?: string
+}
+
 export interface Item {
   id: string
   nombre: string
   categoria: string
-  disponibilidad: string
   descripcion: string
+  estado: string
   ubicacion: string
-  asignadoA: string
-  externoNombre: string
+  prestado: boolean
+  historialEgresos: EgresoRecord[]
 }

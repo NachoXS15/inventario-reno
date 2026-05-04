@@ -3,370 +3,370 @@
     "id": "1",
     "nombre": "Mochila Sidiunlar",
     "categoria": "Transporte",
-    "disponibilidad": "disponible",
     "descripcion": "Mochila de transporte principal para equipos.",
-    "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "estado": "disponible",
+    "ubicacion": "recepcion",
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "2",
     "nombre": "Notebook Asus ROG",
     "categoria": "Informática",
-    "disponibilidad": "disponible",
     "descripcion": "Laptop Asus ROG para trabajo y producción.",
+    "estado": "disponible",
     "ubicacion": "oficina_principal",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "3",
     "nombre": "Cargador Notebook Asus ROG",
     "categoria": "Informática",
-    "disponibilidad": "disponible",
     "descripcion": "Cargador original del Notebook Asus ROG.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "4",
     "nombre": "Base Notebook con Ventiladores",
     "categoria": "Informática",
-    "disponibilidad": "disponible",
     "descripcion": "Base de soporte con ventiladores de refrigeración para notebook.",
+    "estado": "disponible",
     "ubicacion": "oficina_principal",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "5",
     "nombre": "Mouse Alámbrico ROG",
     "categoria": "Informática",
-    "disponibilidad": "disponible",
     "descripcion": "Mouse gaming alámbrico ROG.",
+    "estado": "disponible",
     "ubicacion": "oficina_principal",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "6",
     "nombre": "Mouse Inalámbrico Yelandar",
     "categoria": "Informática",
-    "disponibilidad": "disponible",
     "descripcion": "Mouse inalámbrico Yelandar.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "7",
     "nombre": "Kit DJI Pocket 3",
     "categoria": "Fotografía",
-    "disponibilidad": "disponible",
     "descripcion": "Kit completo DJI Pocket 3: cámara principal, batería portátil, micrófono con pelusa, stand trípode y manuales.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "8",
     "nombre": "Luces Ulanzi (x2)",
     "categoria": "Fotografía",
-    "disponibilidad": "disponible",
     "descripcion": "Pack de 2 luces Ulanzi para iluminación en exteriores e interiores.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "9",
     "nombre": "PowerBank Sidiunlar",
     "categoria": "Accesorios",
-    "disponibilidad": "disponible",
     "descripcion": "Batería portátil Sidiunlar para carga de dispositivos.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "10",
     "nombre": "PowerBank Ecopower",
     "categoria": "Accesorios",
-    "disponibilidad": "disponible",
     "descripcion": "Batería portátil Ecopower para carga de dispositivos.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "11",
     "nombre": "Auriculares de Cable",
     "categoria": "Audio",
-    "disponibilidad": "disponible",
     "descripcion": "Auriculares con cable para monitoreo y comunicaciones.",
+    "estado": "disponible",
     "ubicacion": "oficina_principal",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "12",
     "nombre": "Celular Samsung S23 Plus",
     "categoria": "Comunicaciones",
-    "disponibilidad": "en_uso",
     "descripcion": "Samsung Galaxy S23 Plus con caja original.",
+    "estado": "en_uso",
     "ubicacion": "oficina_principal",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "13",
     "nombre": "Micrófonos Corbateros Dinax (x2)",
     "categoria": "Audio",
-    "disponibilidad": "disponible",
     "descripcion": "Pack de 2 micrófonos de corbata Dinax.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "14",
     "nombre": "Starlink",
     "categoria": "Comunicaciones",
-    "disponibilidad": "disponible",
     "descripcion": "Kit de antena y router Starlink para conectividad satelital.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "15",
     "nombre": "Megáfono",
     "categoria": "Audio",
-    "disponibilidad": "disponible",
     "descripcion": "Megáfono portátil para uso en exteriores.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "16",
     "nombre": "Proyector",
     "categoria": "Electrónica",
-    "disponibilidad": "disponible",
     "descripcion": "Proyector portátil para presentaciones y proyecciones.",
+    "estado": "disponible",
     "ubicacion": "sala_reuniones",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "17",
     "nombre": "Drones (x2)",
     "categoria": "Fotografía",
-    "disponibilidad": "disponible",
     "descripcion": "Pack de 2 drones para fotografía y video aéreo.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "18",
     "nombre": "GoPro Hero 13 Black",
     "categoria": "Fotografía",
-    "disponibilidad": "disponible",
     "descripcion": "Cámara de acción GoPro Hero 13 Black.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "19",
     "nombre": "Gimbal",
     "categoria": "Fotografía",
-    "disponibilidad": "disponible",
     "descripcion": "Estabilizador gimbal para cámara y dispositivos móviles.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "20",
     "nombre": "Impresora 3D de Filamento (FDM)",
     "categoria": "Impresión 3D",
-    "disponibilidad": "disponible",
     "descripcion": "Impresora 3D de tipo filamento (FDM).",
+    "estado": "disponible",
     "ubicacion": "laboratorio",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "21",
     "nombre": "Impresora 3D de Resina (SLA)",
     "categoria": "Impresión 3D",
-    "disponibilidad": "disponible",
     "descripcion": "Impresora 3D de tipo resina líquida (SLA/MSLA).",
+    "estado": "disponible",
     "ubicacion": "laboratorio",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "22",
     "nombre": "Accesorios Impresoras 3D",
     "categoria": "Impresión 3D",
-    "disponibilidad": "disponible",
     "descripcion": "Water wash, cable de corriente, brazo articulado, espátula, precintos, kit de herramientas y alicate.",
+    "estado": "disponible",
     "ubicacion": "laboratorio",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "23",
     "nombre": "Filamentos Impresora 3D",
     "categoria": "Impresión 3D",
-    "disponibilidad": "disponible",
     "descripcion": "Stock de filamentos: chocolate, plateado, blanco y verde.",
+    "estado": "disponible",
     "ubicacion": "laboratorio",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "24",
     "nombre": "Resina Negra (x3)",
     "categoria": "Impresión 3D",
-    "disponibilidad": "disponible",
     "descripcion": "3 frascos de resina negra para impresora de resina.",
+    "estado": "disponible",
     "ubicacion": "laboratorio",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "25",
     "nombre": "Disco Duro Portátil WD 1TB",
     "categoria": "Almacenamiento",
-    "disponibilidad": "disponible",
     "descripcion": "Disco duro portátil Western Digital de 1TB.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "26",
     "nombre": "SSD Portátil 4TB",
     "categoria": "Almacenamiento",
-    "disponibilidad": "disponible",
     "descripcion": "SSD portátil celeste de 4TB de alta velocidad.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "27",
     "nombre": "Carry Disk SATA 2.5''",
     "categoria": "Almacenamiento",
-    "disponibilidad": "disponible",
     "descripcion": "Case portátil para discos SATA de 2.5 pulgadas.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "28",
     "nombre": "Pendrive Kingston 64GB",
     "categoria": "Almacenamiento",
-    "disponibilidad": "disponible",
     "descripcion": "Memoria USB Kingston de 64GB.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "29",
     "nombre": "Cámara Canon EOS 60D",
     "categoria": "Fotografía",
-    "disponibilidad": "disponible",
     "descripcion": "Cuerpo de cámara réflex digital Canon EOS 60D.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "30",
     "nombre": "Lente Sigma Gran Angular 10-20mm",
     "categoria": "Fotografía",
-    "disponibilidad": "disponible",
     "descripcion": "Lente Sigma gran angular 10-20mm para montura Canon.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "31",
     "nombre": "Lente Sigma 18-250mm",
     "categoria": "Fotografía",
-    "disponibilidad": "disponible",
     "descripcion": "Lente Sigma zoom 18-250mm para montura Canon.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "32",
     "nombre": "Baterías Cámara Canon (x2)",
     "categoria": "Fotografía",
-    "disponibilidad": "disponible",
     "descripcion": "2 baterías recargables originales para Canon EOS 60D.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "33",
     "nombre": "Cargador Batería Canon",
     "categoria": "Fotografía",
-    "disponibilidad": "disponible",
     "descripcion": "Cargador de batería original para Canon EOS 60D.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "34",
     "nombre": "Cable Cargador Canon",
     "categoria": "Fotografía",
-    "disponibilidad": "disponible",
     "descripcion": "Cable de carga para la cámara Canon EOS 60D.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "35",
     "nombre": "Bolso Cámara Canon",
     "categoria": "Transporte",
-    "disponibilidad": "disponible",
     "descripcion": "Bolso de transporte para cámara Canon y accesorios.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "36",
     "nombre": "Tarjetas de Memoria",
     "categoria": "Almacenamiento",
-    "disponibilidad": "disponible",
     "descripcion": "MicroSD SanDisk 32GB, MicroSD Kingston 32GB, SanDisk Extreme MicroSD 128GB, MicroSD Kingston 8GB.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   },
   {
     "id": "37",
     "nombre": "Kit de Cables",
     "categoria": "Accesorios",
-    "disponibilidad": "disponible",
     "descripcion": "Cable HDMI, cable de red RJ45, 2x cable Tipo C, cable AV (rojo/amarillo/blanco), 2x cable USB-A.",
+    "estado": "disponible",
     "ubicacion": "deposito",
-    "asignadoA": "externos",
-    "externoNombre": ""
+    "prestado": false,
+    "historialEgresos": []
   }
 ]
