@@ -78,7 +78,7 @@ export function Modal({
       <div className="relative flex w-full max-w-lg flex-col rounded-2xl bg-white shadow-2xl" style={{ maxHeight: '90vh' }}>
 
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-zinc-100 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-zinc-100 px-4 py-4 sm:px-6">
           <div className="min-w-0 flex-1">
             <h2 className="truncate text-lg font-semibold text-zinc-900">{item.nombre}</h2>
             <div className="mt-2 flex gap-1">
@@ -116,7 +116,7 @@ export function Modal({
         </div>
 
         {/* Body */}
-        <div className="overflow-y-auto px-6 py-5">
+        <div className="overflow-y-auto px-4 py-5 sm:px-6">
 
           {activeTab === 'info' && (
             <div className="space-y-4">
@@ -339,7 +339,7 @@ export function Modal({
         </div>
 
         {/* Footer */}
-        <div className="flex gap-3 border-t border-zinc-100 px-6 py-4">
+        <div className="flex gap-3 border-t border-zinc-100 px-4 py-4 sm:px-6">
           <button
             onClick={onClose}
             className="flex-1 rounded-lg border border-zinc-200 px-4 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50"

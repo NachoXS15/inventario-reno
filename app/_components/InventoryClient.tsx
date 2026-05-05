@@ -123,15 +123,15 @@ export default function InventoryClient({
     <div className="min-h-screen bg-zinc-50 font-sans">
       <Header />
 
-      <main className="mx-auto max-w-5xl space-y-6 px-6 py-8">
+      <main className="mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
 
         {/* Main tabs */}
-        <div className="flex border-b border-zinc-200">
+        <div className="flex overflow-x-auto border-b border-zinc-200">
           {(['oficina', 'fuera'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => switchTab(tab)}
-              className={`px-5 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
+              className={`whitespace-nowrap px-3 py-2.5 text-xs font-medium transition-colors border-b-2 -mb-px sm:px-5 sm:py-3 sm:text-sm ${
                 activeMainTab === tab
                   ? 'border-[#912ac8] text-[#912ac8]'
                   : 'border-transparent text-zinc-500 hover:text-zinc-700'
@@ -142,7 +142,7 @@ export default function InventoryClient({
           ))}
           <button
             onClick={() => switchTab('contactos')}
-            className={`px-5 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
+            className={`whitespace-nowrap px-3 py-2.5 text-xs font-medium transition-colors border-b-2 -mb-px sm:px-5 sm:py-3 sm:text-sm ${
               activeMainTab === 'contactos'
                 ? 'border-[#912ac8] text-[#912ac8]'
                 : 'border-transparent text-zinc-500 hover:text-zinc-700'
@@ -179,11 +179,11 @@ export default function InventoryClient({
                   className="w-full rounded-lg border border-zinc-300 bg-white py-3 pl-10 pr-4 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-[#912ac8] focus:outline-none focus:ring-2 focus:ring-zinc-200"
                 />
               </div>
-              <div className="mt-3 flex gap-3">
+              <div className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:gap-3">
                 <select
                   value={filterEstado}
                   onChange={(e) => setFilterEstado(e.target.value)}
-                  className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-[#912ac8] focus:outline-none focus:ring-2 focus:ring-zinc-200"
+                  className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-[#912ac8] focus:outline-none focus:ring-2 focus:ring-zinc-200 sm:flex-1"
                 >
                   <option value="">Estado</option>
                   {Object.entries(ESTADO).map(([value, { label }]) => (
@@ -193,7 +193,7 @@ export default function InventoryClient({
                 <select
                   value={filterUbicacion}
                   onChange={(e) => setFilterUbicacion(e.target.value)}
-                  className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-[#912ac8] focus:outline-none focus:ring-2 focus:ring-zinc-200"
+                  className="rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-[#912ac8] focus:outline-none focus:ring-2 focus:ring-zinc-200 sm:flex-1"
                 >
                   <option value="">Ubicación</option>
                   {Object.entries(UBICACION).map(([value, { label }]) => (
@@ -203,7 +203,7 @@ export default function InventoryClient({
                 <select
                   value={filterCategoria}
                   onChange={(e) => setFilterCategoria(e.target.value)}
-                  className="flex-1 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-[#912ac8] focus:outline-none focus:ring-2 focus:ring-zinc-200"
+                  className={`${!hasFilters ? 'col-span-2' : ''} rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-700 focus:border-[#912ac8] focus:outline-none focus:ring-2 focus:ring-zinc-200 sm:flex-1`}
                 >
                   <option value="">Categoría</option>
                   {categorias.map((cat) => (
