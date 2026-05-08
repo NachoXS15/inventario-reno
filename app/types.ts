@@ -1,3 +1,5 @@
+export type Team = 'comunicacion' | 'mantenimiento' | 'admin'
+
 export interface EgresoRecord {
   prestadoA: string
   fechaEgreso: string

@@ -1,14 +1,22 @@
 import type { Item, Contact, EgresoRecord } from './types'
 import InventoryClient from './_components/InventoryClient'
 import { supabaseServer } from '../lib/supabase'
+import { getUserTeam } from '../lib/get-user-team'
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: Promise<{ team?: string }> }) {
+  const params = await searchParams
   const supabase = supabaseServer()
+  const userTeam = await getUserTeam()
+
+  const activeTeam: 'comunicacion' | 'mantenimiento' =
+    userTeam === 'admin'
+      ? params.team === 'mantenimiento' ? 'mantenimiento' : 'comunicacion'
+      : (userTeam as 'comunicacion' | 'mantenimiento')
 
   const [{ data: itemsData }, { data: egresosData }, { data: contactsData }] = await Promise.all([
-    supabase.from('items').select('*').order('nombre', { ascending: true }),
-    supabase.from('egresos').select('*').order('seq', { ascending: true }),
-    supabase.from('contacts').select('*').order('nombre', { ascending: true }),
+    supabase.from('items').select('*').eq('team', activeTeam).order('nombre', { ascending: true }),
+    supabase.from('egresos').select('*').eq('team', activeTeam).order('seq', { ascending: true }),
+    supabase.from('contacts').select('*').eq('team', activeTeam).order('nombre', { ascending: true }),
   ])
 
   const items: Item[] = (itemsData ?? []).map((row) => ({
@@ -37,5 +45,13 @@ export default async function Home() {
     categoria: row.categoria,
   }))
 
-  return <InventoryClient initialItems={items} initialContacts={contacts} />
+  return (
+    <InventoryClient
+      key={activeTeam}
+      initialItems={items}
+      initialContacts={contacts}
+      userTeam={userTeam}
+      activeTeam={activeTeam}
+    />
+  )
 }

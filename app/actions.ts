@@ -21,7 +21,8 @@ export async function updateItem(
 
 export async function registrarEgreso(
   id: string,
-  egreso: Omit<EgresoRecord, 'fechaDevolucion'>
+  egreso: Omit<EgresoRecord, 'fechaDevolucion'>,
+  team: 'comunicacion' | 'mantenimiento'
 ) {
   const supabase = supabaseServer()
   await Promise.all([
@@ -31,6 +32,7 @@ export async function registrarEgreso(
       fecha_egreso: egreso.fechaEgreso,
       fecha_devolucion_estimada: egreso.fechaDevolucionEstimada,
       motivo: egreso.motivo,
+      team,
     }),
     supabase.from('items').update({ prestado: true }).eq('id', id),
   ])
@@ -54,12 +56,16 @@ export async function registrarDevolucion(id: string, fechaDevolucion: string) {
   revalidatePath('/')
 }
 
-export async function addContact(data: Omit<Contact, 'id'>) {
+export async function addContact(
+  data: Omit<Contact, 'id'>,
+  team: 'comunicacion' | 'mantenimiento'
+) {
   const supabase = supabaseServer()
   await supabase.from('contacts').insert({
     nombre: data.nombre,
     telefono: data.telefono,
     categoria: data.categoria,
+    team,
   })
   revalidatePath('/')
 }

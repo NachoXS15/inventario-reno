@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import type { Item, Contact } from '../types'
+import { useRouter } from 'next/navigation'
+import type { Item, Contact, Team } from '../types'
 import {
   updateItem,
   registrarEgreso,
@@ -19,10 +20,15 @@ import { ESTADO, UBICACION, type InfoFormData, type EgresoFormData, type Devoluc
 export default function InventoryClient({
   initialItems,
   initialContacts,
+  userTeam,
+  activeTeam,
 }: {
   initialItems: Item[]
   initialContacts: Contact[]
+  userTeam: Team
+  activeTeam: 'comunicacion' | 'mantenimiento'
 }) {
+  const router = useRouter()
   const [items, setItems] = useState(initialItems)
   const [contacts, setContacts] = useState(initialContacts)
   const [activeMainTab, setActiveMainTab] = useState<'oficina' | 'fuera' | 'contactos'>('oficina')
@@ -85,7 +91,7 @@ export default function InventoryClient({
       )
     )
     setSelectedItem(null)
-    startTransition(async () => { await registrarEgreso(selectedItem.id, data) })
+    startTransition(async () => { await registrarEgreso(selectedItem.id, data, activeTeam) })
   }
 
   function handleRegistrarDevolucion(data: DevolucionFormData) {
@@ -104,7 +110,7 @@ export default function InventoryClient({
 
   function handleAddContact(data: Omit<Contact, 'id'>) {
     setContacts((prev) => [...prev, { id: crypto.randomUUID(), ...data }])
-    startTransition(async () => { await addContact(data) })
+    startTransition(async () => { await addContact(data, activeTeam) })
   }
 
   function handleUpdateContact(id: string, data: Omit<Contact, 'id'>) {
@@ -121,9 +127,35 @@ export default function InventoryClient({
 
   return (
     <div className="min-h-screen bg-zinc-50 font-sans">
-      <Header />
+      <Header activeTeam={activeTeam} />
 
       <main className="mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6 sm:py-8">
+
+        {/* Admin team switcher */}
+        {userTeam === 'admin' && (
+          <div className="flex items-center gap-1 rounded-xl border border-zinc-200 bg-white p-1 w-fit shadow-sm">
+            <button
+              onClick={() => router.push('/?team=comunicacion')}
+              className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-colors ${
+                activeTeam === 'comunicacion'
+                  ? 'bg-[#912ac8] text-white shadow-sm'
+                  : 'text-zinc-500 hover:text-zinc-700'
+              }`}
+            >
+              Comunicación
+            </button>
+            <button
+              onClick={() => router.push('/?team=mantenimiento')}
+              className={`rounded-lg px-4 py-1.5 text-sm font-medium transition-colors ${
+                activeTeam === 'mantenimiento'
+                  ? 'bg-[#912ac8] text-white shadow-sm'
+                  : 'text-zinc-500 hover:text-zinc-700'
+              }`}
+            >
+              Mantenimiento
+            </button>
+          </div>
+        )}
 
         {/* Main tabs */}
         <div className="flex overflow-x-auto border-b border-zinc-200">
