@@ -14,6 +14,9 @@ import {
 import { Header } from './Header'
 import { ItemCard } from './ItemCard'
 import { Modal } from './Modal'
+import { BulkEgresoPanel } from './BulkEgresoPanel'
+import { BulkEgresoModal } from './BulkEgresoModal'
+import { BulkDevolucionModal } from './BulkDevolucionModal'
 import { ContactsTab } from './ContactsTab'
 import { ESTADO, UBICACION, type InfoFormData, type EgresoFormData, type DevolucionFormData } from './constants'
 
@@ -37,6 +40,12 @@ export default function InventoryClient({
   const [filterUbicacion, setFilterUbicacion] = useState('')
   const [filterCategoria, setFilterCategoria] = useState('')
   const [selectedItem, setSelectedItem] = useState<Item | null>(null)
+  const [bulkMode, setBulkMode] = useState(false)
+  const [bulkItems, setBulkItems] = useState<Item[]>([])
+  const [bulkModalOpen, setBulkModalOpen] = useState(false)
+  const [bulkDevMode, setBulkDevMode] = useState(false)
+  const [bulkDevItems, setBulkDevItems] = useState<Item[]>([])
+  const [bulkDevModalOpen, setBulkDevModalOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
 
   const enOficinaCount = items.filter((i) => !i.prestado).length
@@ -72,6 +81,71 @@ export default function InventoryClient({
     setFilterEstado('')
     setFilterUbicacion('')
     setFilterCategoria('')
+    setBulkMode(false)
+    setBulkItems([])
+    setBulkDevMode(false)
+    setBulkDevItems([])
+  }
+
+  function handleDropToBulk(itemId: string) {
+    const item = items.find((i) => i.id === itemId)
+    if (!item || item.prestado) return
+    if (bulkItems.some((i) => i.id === itemId)) return
+    setBulkItems((prev) => [...prev, item])
+  }
+
+  function handleRemoveFromBulk(itemId: string) {
+    setBulkItems((prev) => prev.filter((i) => i.id !== itemId))
+  }
+
+  function handleDropToBulkDev(itemId: string) {
+    const item = items.find((i) => i.id === itemId)
+    if (!item || !item.prestado) return
+    if (bulkDevItems.some((i) => i.id === itemId)) return
+    setBulkDevItems((prev) => [...prev, item])
+  }
+
+  function handleRemoveFromBulkDev(itemId: string) {
+    setBulkDevItems((prev) => prev.filter((i) => i.id !== itemId))
+  }
+
+  function handleBulkDevolucion(data: DevolucionFormData) {
+    const itemsToProcess = [...bulkDevItems]
+    setItems((prev) =>
+      prev.map((i) => {
+        if (!itemsToProcess.some((bi) => bi.id === i.id)) return i
+        const historial = [...i.historialEgresos]
+        historial[historial.length - 1] = { ...historial[historial.length - 1], ...data }
+        return { ...i, prestado: false, historialEgresos: historial }
+      })
+    )
+    setBulkDevItems([])
+    setBulkDevModalOpen(false)
+    setBulkDevMode(false)
+    startTransition(async () => {
+      for (const item of itemsToProcess) {
+        await registrarDevolucion(item.id, data.fechaDevolucion)
+      }
+    })
+  }
+
+  function handleBulkEgreso(data: EgresoFormData) {
+    const itemsToProcess = [...bulkItems]
+    setItems((prev) =>
+      prev.map((i) =>
+        itemsToProcess.some((bi) => bi.id === i.id)
+          ? { ...i, prestado: true, historialEgresos: [...i.historialEgresos, data] }
+          : i
+      )
+    )
+    setBulkItems([])
+    setBulkModalOpen(false)
+    setBulkMode(false)
+    startTransition(async () => {
+      for (const item of itemsToProcess) {
+        await registrarEgreso(item.id, data, activeTeam)
+      }
+    })
   }
 
   function handleSaveInfo(data: InfoFormData) {
@@ -253,18 +327,99 @@ export default function InventoryClient({
               </div>
             </section>
 
-            {/* Item list */}
-            <section>
-              <div className="space-y-3">
-                {filtered.length === 0 ? (
-                  <p className="py-16 text-center text-sm text-zinc-400">No se encontraron elementos.</p>
-                ) : (
-                  filtered.map((item) => (
-                    <ItemCard key={item.id} item={item} onClick={() => setSelectedItem(item)} />
-                  ))
+            {/* Bulk mode toggle */}
+            {(activeMainTab === 'oficina' || activeMainTab === 'fuera') && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-zinc-400">
+                  {bulkMode && (bulkItems.length > 0
+                    ? `${bulkItems.length} elemento${bulkItems.length !== 1 ? 's' : ''} seleccionado${bulkItems.length !== 1 ? 's' : ''}`
+                    : 'Hacé clic o arrastrá para seleccionar')}
+                  {bulkDevMode && (bulkDevItems.length > 0
+                    ? `${bulkDevItems.length} elemento${bulkDevItems.length !== 1 ? 's' : ''} seleccionado${bulkDevItems.length !== 1 ? 's' : ''}`
+                    : 'Hacé clic o arrastrá para seleccionar')}
+                </span>
+                {activeMainTab === 'oficina' && (
+                  <button
+                    onClick={() => { setBulkMode(!bulkMode); setBulkItems([]) }}
+                    className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                      bulkMode
+                        ? 'bg-zinc-200 text-zinc-700 hover:bg-zinc-300'
+                        : 'bg-[#912ac8]/10 text-[#912ac8] hover:bg-[#912ac8]/20'
+                    }`}
+                  >
+                    {bulkMode ? 'Cancelar selección' : 'Egreso múltiple'}
+                  </button>
+                )}
+                {activeMainTab === 'fuera' && (
+                  <button
+                    onClick={() => { setBulkDevMode(!bulkDevMode); setBulkDevItems([]) }}
+                    className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                      bulkDevMode
+                        ? 'bg-zinc-200 text-zinc-700 hover:bg-zinc-300'
+                        : 'bg-green-700/10 text-green-700 hover:bg-green-700/20'
+                    }`}
+                  >
+                    {bulkDevMode ? 'Cancelar selección' : 'Devolución múltiple'}
+                  </button>
                 )}
               </div>
-            </section>
+            )}
+
+            {/* Item list + bulk panel */}
+            <div className="flex items-start gap-4">
+              <section className="min-w-0 flex-1">
+                <div className="space-y-3">
+                  {filtered.length === 0 ? (
+                    <p className="py-16 text-center text-sm text-zinc-400">No se encontraron elementos.</p>
+                  ) : (
+                    filtered.map((item) => {
+                      const inBulk = bulkItems.some((b) => b.id === item.id)
+                      const inBulkDev = bulkDevItems.some((b) => b.id === item.id)
+                      return (
+                        <ItemCard
+                          key={item.id}
+                          item={item}
+                          bulkMode={bulkMode}
+                          bulkDevMode={bulkDevMode}
+                          isInBulk={inBulk || inBulkDev}
+                          onClick={
+                            bulkMode && !item.prestado
+                              ? () => (inBulk ? handleRemoveFromBulk(item.id) : handleDropToBulk(item.id))
+                              : bulkMode && item.prestado
+                              ? () => undefined
+                              : bulkDevMode && item.prestado
+                              ? () => (inBulkDev ? handleRemoveFromBulkDev(item.id) : handleDropToBulkDev(item.id))
+                              : () => setSelectedItem(item)
+                          }
+                        />
+                      )
+                    })
+                  )}
+                </div>
+              </section>
+
+              {bulkMode && (
+                <BulkEgresoPanel
+                  items={bulkItems}
+                  onDropItem={handleDropToBulk}
+                  onRemoveItem={handleRemoveFromBulk}
+                  onConfirmar={() => setBulkModalOpen(true)}
+                  onCancel={() => { setBulkMode(false); setBulkItems([]) }}
+                />
+              )}
+
+              {bulkDevMode && (
+                <BulkEgresoPanel
+                  items={bulkDevItems}
+                  onDropItem={handleDropToBulkDev}
+                  onRemoveItem={handleRemoveFromBulkDev}
+                  onConfirmar={() => setBulkDevModalOpen(true)}
+                  onCancel={() => { setBulkDevMode(false); setBulkDevItems([]) }}
+                  title="Devolución múltiple"
+                  confirmLabel="Registrar devolución"
+                />
+              )}
+            </div>
           </>
         )}
 
@@ -286,6 +441,25 @@ export default function InventoryClient({
           onSaveInfo={handleSaveInfo}
           onRegistrarEgreso={handleRegistrarEgreso}
           onRegistrarDevolucion={handleRegistrarDevolucion}
+          isPending={isPending}
+        />
+      )}
+
+      {bulkModalOpen && (
+        <BulkEgresoModal
+          items={bulkItems}
+          contacts={contacts}
+          onClose={() => setBulkModalOpen(false)}
+          onConfirmar={handleBulkEgreso}
+          isPending={isPending}
+        />
+      )}
+
+      {bulkDevModalOpen && (
+        <BulkDevolucionModal
+          items={bulkDevItems}
+          onClose={() => setBulkDevModalOpen(false)}
+          onConfirmar={handleBulkDevolucion}
           isPending={isPending}
         />
       )}
