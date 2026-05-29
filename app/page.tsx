@@ -27,6 +27,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
     estado: row.estado,
     ubicacion: row.ubicacion,
     prestado: row.prestado,
+    cantidadTotal: row.cantidad_total ?? undefined,
     historialEgresos: (egresosData ?? [])
       .filter((e) => e.item_id === row.id)
       .map((e): EgresoRecord => ({
@@ -35,6 +36,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ t
         fechaDevolucionEstimada: e.fecha_devolucion_estimada,
         fechaDevolucion: e.fecha_devolucion ?? undefined,
         motivo: e.motivo,
+        cantidad: e.cantidad ?? undefined,
       })),
   }))
 

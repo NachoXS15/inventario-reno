@@ -40,37 +40,62 @@ export function Modal({
   onRegistrarDevolucion: (data: DevolucionFormData) => void
   isPending: boolean
 }) {
+  const isQuantityItem = (item.cantidadTotal ?? 1) > 1
+  const cantidadPrestada = isQuantityItem
+    ? item.historialEgresos.filter(e => !e.fechaDevolucion).reduce((s, e) => s + (e.cantidad ?? 1), 0)
+    : item.prestado ? 1 : 0
+  const cantidadDisponible = isQuantityItem ? (item.cantidadTotal! - cantidadPrestada) : (item.prestado ? 0 : 1)
+  const lastActiveEgreso = [...item.historialEgresos].reverse().find(e => !e.fechaDevolucion) ?? null
+
   const [activeTab, setActiveTab] = useState<'info' | 'egreso'>('info')
+  // For quantity items with both available and loaned units
+  const [egresoDevTab, setEgresoDevTab] = useState<'egreso' | 'devolucion'>(
+    isQuantityItem && cantidadPrestada > 0 && cantidadDisponible === 0 ? 'devolucion' : 'egreso'
+  )
   const [infoForm, setInfoForm] = useState<InfoFormData>({
     nombre: item.nombre,
     categoria: item.categoria,
     descripcion: item.descripcion,
     estado: item.estado,
     ubicacion: item.ubicacion,
+    cantidadTotal: item.cantidadTotal,
   })
   const [egresoForm, setEgresoForm] = useState<EgresoFormData>({
     prestadoA: '',
     fechaEgreso: today(),
     fechaDevolucionEstimada: '',
     motivo: '',
+    cantidad: 1,
   })
   const [devolucionForm, setDevolucionForm] = useState<DevolucionFormData>({
     fechaDevolucion: today(),
   })
   const [historialOpen, setHistorialOpen] = useState(false)
 
-  const lastEgreso = item.historialEgresos.at(-1)
-  const contactoAsignado = lastEgreso
-    ? contacts.find((c) => c.nombre === lastEgreso.prestadoA)
+  const contactoAsignado = lastActiveEgreso
+    ? contacts.find((c) => c.nombre === lastActiveEgreso.prestadoA)
     : undefined
   const whatsappUrl = (() => {
-    if (!contactoAsignado?.telefono) return null
+    if (!contactoAsignado?.telefono || !lastActiveEgreso) return null
     const phone = contactoAsignado.telefono.replace(/\D/g, '')
     const msg = encodeURIComponent(
-      `¡Hola ${lastEgreso?.prestadoA}! ¿Cómo estás? Te escribimos desde comunicación para consultarte cuándo vas a poder devolver "${item.nombre}".`
+      `¡Hola ${lastActiveEgreso.prestadoA}! ¿Cómo estás? Te escribimos desde comunicación para consultarte cuándo vas a poder devolver "${item.nombre}".`
     )
     return `https://wa.me/${phone}?text=${msg}`
   })()
+
+  // Whether to show egreso form vs devolución form
+  const showEgresoForm = activeTab === 'egreso' && (
+    (!isQuantityItem && !item.prestado) ||
+    (isQuantityItem && cantidadDisponible > 0 && (!isQuantityItem || cantidadPrestada === 0 || egresoDevTab === 'egreso'))
+  )
+  const showDevolucionForm = activeTab === 'egreso' && (
+    (!isQuantityItem && item.prestado) ||
+    (isQuantityItem && cantidadPrestada > 0 && (cantidadDisponible === 0 || egresoDevTab === 'devolucion'))
+  )
+
+  const isOverdue = lastActiveEgreso?.fechaDevolucionEstimada &&
+    lastActiveEgreso.fechaDevolucionEstimada < today()
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -172,13 +197,73 @@ export function Modal({
                   </select>
                 </div>
               </Field>
+              <Field label="Cantidad total en stock">
+                <input
+                  type="number"
+                  min={1}
+                  placeholder="Dejar vacío si es un solo elemento"
+                  value={infoForm.cantidadTotal ?? ''}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value)
+                    setInfoForm({ ...infoForm, cantidadTotal: isNaN(val) ? undefined : val })
+                  }}
+                  className={inputClass}
+                />
+              </Field>
             </div>
           )}
 
           {activeTab === 'egreso' && (
             <div className="space-y-5">
 
-              {!item.prestado && (
+              {/* Quantity summary for quantity items */}
+              {isQuantityItem && (
+                <div className="flex items-center justify-around rounded-xl border border-zinc-200 bg-zinc-50 p-4">
+                  <div className="flex flex-col items-center gap-0.5">
+                    <span className="text-2xl font-bold text-green-700">{cantidadDisponible}</span>
+                    <span className="text-xs text-zinc-500">disponibles</span>
+                  </div>
+                  <div className="h-10 w-px bg-zinc-200" />
+                  <div className="flex flex-col items-center gap-0.5">
+                    <span className="text-2xl font-bold text-amber-700">{cantidadPrestada}</span>
+                    <span className="text-xs text-zinc-500">prestados</span>
+                  </div>
+                  <div className="h-10 w-px bg-zinc-200" />
+                  <div className="flex flex-col items-center gap-0.5">
+                    <span className="text-2xl font-bold text-zinc-700">{item.cantidadTotal}</span>
+                    <span className="text-xs text-zinc-500">total</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Mode toggle for quantity items with both available and loaned */}
+              {isQuantityItem && cantidadPrestada > 0 && cantidadDisponible > 0 && (
+                <div className="flex gap-1 rounded-lg border border-zinc-200 bg-zinc-50 p-1">
+                  <button
+                    onClick={() => setEgresoDevTab('egreso')}
+                    className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                      egresoDevTab === 'egreso'
+                        ? 'bg-white shadow-sm text-zinc-900'
+                        : 'text-zinc-500 hover:text-zinc-700'
+                    }`}
+                  >
+                    Nuevo egreso
+                  </button>
+                  <button
+                    onClick={() => setEgresoDevTab('devolucion')}
+                    className={`flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                      egresoDevTab === 'devolucion'
+                        ? 'bg-white shadow-sm text-zinc-900'
+                        : 'text-zinc-500 hover:text-zinc-700'
+                    }`}
+                  >
+                    Registrar devolución
+                  </button>
+                </div>
+              )}
+
+              {/* Egreso form */}
+              {showEgresoForm && (
                 <div className="space-y-4">
                   <p className="text-sm text-zinc-500">Completá los datos para registrar la salida del elemento.</p>
                   <Field label="Prestado a">
@@ -195,6 +280,21 @@ export function Modal({
                       ))}
                     </select>
                   </Field>
+                  {isQuantityItem && (
+                    <Field label={`Cantidad a prestar (máx. ${cantidadDisponible})`}>
+                      <input
+                        type="number"
+                        min={1}
+                        max={cantidadDisponible}
+                        value={egresoForm.cantidad ?? 1}
+                        onChange={(e) => {
+                          const val = Math.min(parseInt(e.target.value) || 1, cantidadDisponible)
+                          setEgresoForm({ ...egresoForm, cantidad: val })
+                        }}
+                        className={inputClass}
+                      />
+                    </Field>
+                  )}
                   <Field label="Fecha de egreso">
                     <input
                       type="date"
@@ -223,15 +323,16 @@ export function Modal({
                 </div>
               )}
 
-              {item.prestado && lastEgreso && (
+              {/* Devolución form */}
+              {showDevolucionForm && lastActiveEgreso && (
                 <div className="space-y-4">
-                  {lastEgreso.fechaDevolucionEstimada && lastEgreso.fechaDevolucionEstimada < today() && (
+                  {isOverdue && (
                     <div className="rounded-xl border border-red-200 bg-red-50 p-4 flex flex-col gap-3 text-sm text-red-800">
                       <div className='flex gap-3'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 mt-0.5">
                           <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
                         </svg>
-                        <span>La fecha estimada de devolución ya pasó. Contactá a <strong>{lastEgreso.prestadoA}</strong> para coordinar la devolución.</span>
+                        <span>La fecha estimada de devolución ya pasó. Contactá a <strong>{lastActiveEgreso.prestadoA}</strong> para coordinar la devolución.</span>
                       </div>
                       {whatsappUrl && (
                         <a
@@ -248,20 +349,23 @@ export function Modal({
                   <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 space-y-1.5 text-sm">
                     <div className="flex justify-between">
                       <span className="text-zinc-500">Tiene</span>
-                      <span className="font-medium text-zinc-800">{lastEgreso.prestadoA}</span>
+                      <span className="font-medium text-zinc-800">
+                        {lastActiveEgreso.prestadoA}
+                        {lastActiveEgreso.cantidad ? ` · ${lastActiveEgreso.cantidad} unidades` : ''}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-500">Desde</span>
-                      <span className="font-medium text-zinc-800">{formatDate(lastEgreso.fechaEgreso)}</span>
+                      <span className="font-medium text-zinc-800">{formatDate(lastActiveEgreso.fechaEgreso)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-zinc-500">Devol. estimada</span>
-                      <span className="font-medium text-zinc-800">{formatDate(lastEgreso.fechaDevolucionEstimada)}</span>
+                      <span className="font-medium text-zinc-800">{formatDate(lastActiveEgreso.fechaDevolucionEstimada)}</span>
                     </div>
-                    {lastEgreso.motivo && (
+                    {lastActiveEgreso.motivo && (
                       <div className="flex justify-between gap-4">
                         <span className="text-zinc-500 shrink-0">Motivo</span>
-                        <span className="font-medium text-zinc-800 text-right">{lastEgreso.motivo}</span>
+                        <span className="font-medium text-zinc-800 text-right">{lastActiveEgreso.motivo}</span>
                       </div>
                     )}
                   </div>
@@ -276,6 +380,7 @@ export function Modal({
                 </div>
               )}
 
+              {/* Historial */}
               <div className="border-t border-zinc-100 pt-4">
                 <button
                   onClick={() => setHistorialOpen(!historialOpen)}
@@ -308,6 +413,12 @@ export function Modal({
                             <span className="text-zinc-500">Prestado a</span>
                             <span className="font-medium text-zinc-800">{eg.prestadoA}</span>
                           </div>
+                          {eg.cantidad && eg.cantidad > 1 && (
+                            <div className="flex justify-between">
+                              <span className="text-zinc-500">Cantidad</span>
+                              <span className="font-medium text-zinc-800">{eg.cantidad} unidades</span>
+                            </div>
+                          )}
                           <div className="flex justify-between">
                             <span className="text-zinc-500">Egreso</span>
                             <span className="font-medium text-zinc-800">{formatDate(eg.fechaEgreso)}</span>
@@ -355,7 +466,7 @@ export function Modal({
               {isPending ? 'Guardando…' : 'Guardar cambios'}
             </button>
           )}
-          {activeTab === 'egreso' && !item.prestado && (
+          {showEgresoForm && (
             <button
               onClick={() => onRegistrarEgreso(egresoForm)}
               disabled={isPending || !egresoForm.prestadoA || !egresoForm.fechaDevolucionEstimada}
@@ -364,7 +475,7 @@ export function Modal({
               {isPending ? 'Registrando…' : 'Registrar Egreso'}
             </button>
           )}
-          {activeTab === 'egreso' && item.prestado && (
+          {showDevolucionForm && (
             <button
               onClick={() => onRegistrarDevolucion(devolucionForm)}
               disabled={isPending || !devolucionForm.fechaDevolucion}

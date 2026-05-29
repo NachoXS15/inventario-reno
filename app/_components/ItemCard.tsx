@@ -16,9 +16,16 @@ export function ItemCard({
   isInBulk?: boolean
 }) {
   const lastEgreso = item.historialEgresos.at(-1)
+  const lastActiveEgreso = [...item.historialEgresos].reverse().find(e => !e.fechaDevolucion)
+  const isQuantityItem = (item.cantidadTotal ?? 1) > 1
+  const cantidadPrestada = isQuantityItem
+    ? item.historialEgresos.filter(e => !e.fechaDevolucion).reduce((s, e) => s + (e.cantidad ?? 1), 0)
+    : 0
+  const cantidadDisponible = isQuantityItem ? (item.cantidadTotal! - cantidadPrestada) : null
+  const isItemFuera = item.prestado || (isQuantityItem && cantidadPrestada > 0)
   const canDrag =
     (bulkMode && !item.prestado && !isInBulk) ||
-    (bulkDevMode && item.prestado && !isInBulk)
+    (bulkDevMode && isItemFuera && !isInBulk)
 
   return (
     <div
@@ -33,7 +40,7 @@ export function ItemCard({
           ? 'border-green-500 ring-1 ring-green-500/20 cursor-pointer'
           : isInBulk
           ? 'border-[#912ac8] ring-1 ring-[#912ac8]/20 cursor-pointer'
-          : (bulkMode && !item.prestado) || (bulkDevMode && item.prestado)
+          : (bulkMode && !item.prestado) || (bulkDevMode && isItemFuera)
           ? 'border-zinc-200 cursor-grab hover:border-[#912ac8] hover:shadow-md active:cursor-grabbing'
           : bulkMode || bulkDevMode
           ? 'border-zinc-200 opacity-40 cursor-not-allowed'
@@ -49,11 +56,18 @@ export function ItemCard({
             </span>
           </div>
           <p className="line-clamp-2 text-sm text-zinc-500">{item.descripcion}</p>
-          {item.prestado && lastEgreso && (
+          {item.prestado && lastActiveEgreso && (
             <div className="mt-2 space-y-0.5 text-xs text-zinc-400">
-              <div>Tiene: <span className="font-medium text-zinc-600">{lastEgreso.prestadoA}</span></div>
-              <div>Desde: <span className="font-medium text-zinc-600">{formatDate(lastEgreso.fechaEgreso)}</span></div>
-              <div>Devol. est.: <span className="font-medium text-zinc-600">{formatDate(lastEgreso.fechaDevolucionEstimada)}</span></div>
+              <div>Tiene: <span className="font-medium text-zinc-600">{lastActiveEgreso.prestadoA}{lastActiveEgreso.cantidad ? ` (${lastActiveEgreso.cantidad} u.)` : ''}</span></div>
+              <div>Desde: <span className="font-medium text-zinc-600">{formatDate(lastActiveEgreso.fechaEgreso)}</span></div>
+              <div>Devol. est.: <span className="font-medium text-zinc-600">{formatDate(lastActiveEgreso.fechaDevolucionEstimada)}</span></div>
+            </div>
+          )}
+          {isQuantityItem && !item.prestado && cantidadPrestada > 0 && (
+            <div className="mt-2 text-xs text-zinc-400">
+              <span className="font-medium text-amber-600">{cantidadPrestada} prestados</span>
+              {' · '}
+              <span className="font-medium text-green-700">{cantidadDisponible} disponibles</span>
             </div>
           )}
         </div>
@@ -68,6 +82,17 @@ export function ItemCard({
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
               Seleccionado
+            </span>
+          )}
+          {isQuantityItem && (
+            <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${
+              item.prestado
+                ? 'border-amber-200 bg-amber-100 text-amber-800'
+                : cantidadPrestada > 0
+                ? 'border-blue-200 bg-blue-100 text-blue-800'
+                : 'border-zinc-200 bg-zinc-100 text-zinc-600'
+            }`}>
+              {item.prestado ? 'Sin stock' : cantidadDisponible}/{item.cantidadTotal}
             </span>
           )}
           {item.prestado ? (

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import type { Item, Contact, Team } from '../types'
 import {
   updateItem,
+  addItem,
   registrarEgreso,
   registrarDevolucion,
   addContact,
@@ -18,6 +19,7 @@ import { BulkEgresoPanel } from './BulkEgresoPanel'
 import { BulkEgresoModal } from './BulkEgresoModal'
 import { BulkDevolucionModal } from './BulkDevolucionModal'
 import { ContactsTab } from './ContactsTab'
+import { AddItemModal } from './AddItemModal'
 import { ESTADO, UBICACION, type InfoFormData, type EgresoFormData, type DevolucionFormData } from './constants'
 
 export default function InventoryClient({
@@ -46,14 +48,15 @@ export default function InventoryClient({
   const [bulkDevMode, setBulkDevMode] = useState(false)
   const [bulkDevItems, setBulkDevItems] = useState<Item[]>([])
   const [bulkDevModalOpen, setBulkDevModalOpen] = useState(false)
+  const [showAddModal, setShowAddModal] = useState(false)
   const [isPending, startTransition] = useTransition()
 
-  const enOficinaCount = items.filter((i) => !i.prestado).length
-  const fueraCount = items.filter((i) => i.prestado).length
+  const enOficinaCount = items.filter((i) => !isItemFuera(i)).length
+  const fueraCount = items.filter((i) => isItemFuera(i)).length
   const categorias = Array.from(new Set(items.map((i) => i.categoria))).sort()
 
   const tabItems = items.filter((i) =>
-    activeMainTab === 'oficina' ? !i.prestado : i.prestado
+    activeMainTab === 'oficina' ? !isItemFuera(i) : isItemFuera(i)
   )
 
   const filtered = tabItems.filter((item) => {
@@ -100,7 +103,7 @@ export default function InventoryClient({
 
   function handleDropToBulkDev(itemId: string) {
     const item = items.find((i) => i.id === itemId)
-    if (!item || !item.prestado) return
+    if (!item || !isItemFuera(item)) return
     if (bulkDevItems.some((i) => i.id === itemId)) return
     setBulkDevItems((prev) => [...prev, item])
   }
@@ -109,14 +112,33 @@ export default function InventoryClient({
     setBulkDevItems((prev) => prev.filter((i) => i.id !== itemId))
   }
 
+  function computePrestado(historial: typeof items[number]['historialEgresos'], cantidadTotal?: number): boolean {
+    const cantidadPrestada = historial
+      .filter(e => !e.fechaDevolucion)
+      .reduce((s, e) => s + (e.cantidad ?? 1), 0)
+    if (cantidadTotal && cantidadTotal > 1) return cantidadPrestada >= cantidadTotal
+    return cantidadPrestada > 0
+  }
+
+  function hasActiveEgresos(item: Item): boolean {
+    return item.historialEgresos.some(e => !e.fechaDevolucion)
+  }
+
+  function isItemFuera(item: Item): boolean {
+    return item.prestado || hasActiveEgresos(item)
+  }
+
   function handleBulkDevolucion(data: DevolucionFormData) {
     const itemsToProcess = [...bulkDevItems]
     setItems((prev) =>
       prev.map((i) => {
         if (!itemsToProcess.some((bi) => bi.id === i.id)) return i
         const historial = [...i.historialEgresos]
-        historial[historial.length - 1] = { ...historial[historial.length - 1], ...data }
-        return { ...i, prestado: false, historialEgresos: historial }
+        const lastActiveIdx = historial.map((_, idx) => idx).reverse().find(idx => !historial[idx].fechaDevolucion)
+        if (lastActiveIdx !== undefined) {
+          historial[lastActiveIdx] = { ...historial[lastActiveIdx], fechaDevolucion: data.fechaDevolucion }
+        }
+        return { ...i, prestado: computePrestado(historial, i.cantidadTotal), historialEgresos: historial }
       })
     )
     setBulkDevItems([])
@@ -132,11 +154,11 @@ export default function InventoryClient({
   function handleBulkEgreso(data: EgresoFormData) {
     const itemsToProcess = [...bulkItems]
     setItems((prev) =>
-      prev.map((i) =>
-        itemsToProcess.some((bi) => bi.id === i.id)
-          ? { ...i, prestado: true, historialEgresos: [...i.historialEgresos, data] }
-          : i
-      )
+      prev.map((i) => {
+        if (!itemsToProcess.some((bi) => bi.id === i.id)) return i
+        const newHistorial = [...i.historialEgresos, data]
+        return { ...i, prestado: computePrestado(newHistorial, i.cantidadTotal), historialEgresos: newHistorial }
+      })
     )
     setBulkItems([])
     setBulkModalOpen(false)
@@ -146,6 +168,18 @@ export default function InventoryClient({
         await registrarEgreso(item.id, data, activeTeam)
       }
     })
+  }
+
+  function handleAddItem(data: InfoFormData) {
+    const newItem: Item = {
+      id: crypto.randomUUID(),
+      ...data,
+      prestado: false,
+      historialEgresos: [],
+    }
+    setItems((prev) => [...prev, newItem].sort((a, b) => a.nombre.localeCompare(b.nombre)))
+    setShowAddModal(false)
+    startTransition(async () => { await addItem(data, activeTeam) })
   }
 
   function handleSaveInfo(data: InfoFormData) {
@@ -158,11 +192,11 @@ export default function InventoryClient({
   function handleRegistrarEgreso(data: EgresoFormData) {
     if (!selectedItem) return
     setItems((prev) =>
-      prev.map((i) =>
-        i.id === selectedItem.id
-          ? { ...i, prestado: true, historialEgresos: [...i.historialEgresos, data] }
-          : i
-      )
+      prev.map((i) => {
+        if (i.id !== selectedItem.id) return i
+        const newHistorial = [...i.historialEgresos, data]
+        return { ...i, prestado: computePrestado(newHistorial, i.cantidadTotal), historialEgresos: newHistorial }
+      })
     )
     setSelectedItem(null)
     startTransition(async () => { await registrarEgreso(selectedItem.id, data, activeTeam) })
@@ -174,8 +208,11 @@ export default function InventoryClient({
       prev.map((i) => {
         if (i.id !== selectedItem.id) return i
         const historial = [...i.historialEgresos]
-        historial[historial.length - 1] = { ...historial[historial.length - 1], ...data }
-        return { ...i, prestado: false, historialEgresos: historial }
+        const lastActiveIdx = historial.map((_, idx) => idx).reverse().find(idx => !historial[idx].fechaDevolucion)
+        if (lastActiveIdx !== undefined) {
+          historial[lastActiveIdx] = { ...historial[lastActiveIdx], fechaDevolucion: data.fechaDevolucion }
+        }
+        return { ...i, prestado: computePrestado(historial, i.cantidadTotal), historialEgresos: historial }
       })
     )
     setSelectedItem(null)
@@ -327,9 +364,9 @@ export default function InventoryClient({
               </div>
             </section>
 
-            {/* Bulk mode toggle */}
+            {/* Bulk mode toggle + new item button */}
             {(activeMainTab === 'oficina' || activeMainTab === 'fuera') && (
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2">
                 <span className="text-sm text-zinc-400">
                   {bulkMode && (bulkItems.length > 0
                     ? `${bulkItems.length} elemento${bulkItems.length !== 1 ? 's' : ''} seleccionado${bulkItems.length !== 1 ? 's' : ''}`
@@ -338,30 +375,41 @@ export default function InventoryClient({
                     ? `${bulkDevItems.length} elemento${bulkDevItems.length !== 1 ? 's' : ''} seleccionado${bulkDevItems.length !== 1 ? 's' : ''}`
                     : 'Hacé clic o arrastrá para seleccionar')}
                 </span>
-                {activeMainTab === 'oficina' && (
+                <div className="flex items-center gap-2">
                   <button
-                    onClick={() => { setBulkMode(!bulkMode); setBulkItems([]) }}
-                    className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                      bulkMode
-                        ? 'bg-zinc-200 text-zinc-700 hover:bg-zinc-300'
-                        : 'bg-[#912ac8]/10 text-[#912ac8] hover:bg-[#912ac8]/20'
-                    }`}
+                    onClick={() => setShowAddModal(true)}
+                    className="flex items-center gap-1.5 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm font-medium text-zinc-600 transition-colors hover:border-zinc-400 hover:text-zinc-800"
                   >
-                    {bulkMode ? 'Cancelar selección' : 'Egreso múltiple'}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Nuevo
                   </button>
-                )}
-                {activeMainTab === 'fuera' && (
-                  <button
-                    onClick={() => { setBulkDevMode(!bulkDevMode); setBulkDevItems([]) }}
-                    className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                      bulkDevMode
-                        ? 'bg-zinc-200 text-zinc-700 hover:bg-zinc-300'
-                        : 'bg-green-700/10 text-green-700 hover:bg-green-700/20'
-                    }`}
-                  >
-                    {bulkDevMode ? 'Cancelar selección' : 'Devolución múltiple'}
-                  </button>
-                )}
+                  {activeMainTab === 'oficina' && (
+                    <button
+                      onClick={() => { setBulkMode(!bulkMode); setBulkItems([]) }}
+                      className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                        bulkMode
+                          ? 'bg-zinc-200 text-zinc-700 hover:bg-zinc-300'
+                          : 'bg-[#912ac8]/10 text-[#912ac8] hover:bg-[#912ac8]/20'
+                      }`}
+                    >
+                      {bulkMode ? 'Cancelar selección' : 'Egreso múltiple'}
+                    </button>
+                  )}
+                  {activeMainTab === 'fuera' && (
+                    <button
+                      onClick={() => { setBulkDevMode(!bulkDevMode); setBulkDevItems([]) }}
+                      className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                        bulkDevMode
+                          ? 'bg-zinc-200 text-zinc-700 hover:bg-zinc-300'
+                          : 'bg-green-700/10 text-green-700 hover:bg-green-700/20'
+                      }`}
+                    >
+                      {bulkDevMode ? 'Cancelar selección' : 'Devolución múltiple'}
+                    </button>
+                  )}
+                </div>
               </div>
             )}
 
@@ -387,7 +435,7 @@ export default function InventoryClient({
                               ? () => (inBulk ? handleRemoveFromBulk(item.id) : handleDropToBulk(item.id))
                               : bulkMode && item.prestado
                               ? () => undefined
-                              : bulkDevMode && item.prestado
+                              : bulkDevMode && isItemFuera(item)
                               ? () => (inBulkDev ? handleRemoveFromBulkDev(item.id) : handleDropToBulkDev(item.id))
                               : () => setSelectedItem(item)
                           }
@@ -429,6 +477,7 @@ export default function InventoryClient({
             onAdd={handleAddContact}
             onUpdate={handleUpdateContact}
             onDelete={handleDeleteContact}
+            activeTeam={activeTeam}
           />
         )}
       </main>
@@ -460,6 +509,14 @@ export default function InventoryClient({
           items={bulkDevItems}
           onClose={() => setBulkDevModalOpen(false)}
           onConfirmar={handleBulkDevolucion}
+          isPending={isPending}
+        />
+      )}
+
+      {showAddModal && (
+        <AddItemModal
+          onClose={() => setShowAddModal(false)}
+          onAdd={handleAddItem}
           isPending={isPending}
         />
       )}

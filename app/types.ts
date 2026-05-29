@@ -6,6 +6,7 @@ export interface EgresoRecord {
   fechaDevolucionEstimada: string
   motivo: string
   fechaDevolucion?: string
+  cantidad?: number
 }
 
 export interface Item {
@@ -16,6 +17,7 @@ export interface Item {
   estado: string
   ubicacion: string
   prestado: boolean
+  cantidadTotal?: number
   historialEgresos: EgresoRecord[]
 }
 

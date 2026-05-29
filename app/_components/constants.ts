@@ -28,6 +28,7 @@ export type InfoFormData = {
   descripcion: string
   estado: string
   ubicacion: string
+  cantidadTotal?: number
 }
 
 export type EgresoFormData = {
@@ -35,6 +36,7 @@ export type EgresoFormData = {
   fechaEgreso: string
   fechaDevolucionEstimada: string
   motivo: string
+  cantidad?: number
 }
 
 export type DevolucionFormData = {

@@ -24,12 +24,15 @@ export function ContactsTab({
   onAdd,
   onUpdate,
   onDelete,
+  activeTeam,
 }: {
   contacts: Contact[]
   onAdd: (data: Omit<Contact, 'id'>) => void
   onUpdate: (id: string, data: Omit<Contact, 'id'>) => void
   onDelete: (id: string) => void
+  activeTeam: 'comunicacion' | 'mantenimiento'
 }) {
+  const teamLabel = activeTeam === 'mantenimiento' ? 'Mantenimiento' : 'Comunicación'
   const [showAdd, setShowAdd] = useState(false)
   const [addForm, setAddForm] = useState<ContactForm>(emptyForm)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -81,7 +84,7 @@ export function ContactsTab({
             onKeyDown={(e) => e.key === 'Enter' && submitAdd()}
             className={inputClass}
           >
-            <option value="Comunicación">Comunicación</option>
+            <option value={teamLabel}>{teamLabel}</option>
             <option value="Externo">Externo</option>
           </select>
           <div className="flex gap-2">
@@ -137,11 +140,11 @@ export function ContactsTab({
                 />
                 <select
                   value={editForm.categoria}
-                  onChange={(e) => setAddForm({ ...addForm, categoria: e.target.value })}
-                  onKeyDown={(e) => e.key === 'Enter' && submitAdd()}
+                  onChange={(e) => setEditForm({ ...editForm, categoria: e.target.value })}
+                  onKeyDown={(e) => e.key === 'Enter' && submitEdit()}
                   className={inputClass}
                 >
-                  <option value="Comunicación">Comunicación</option>
+                  <option value={teamLabel}>{teamLabel}</option>
                   <option value="Externo">Externo</option>
                 </select>
                 <div className="flex gap-2">
